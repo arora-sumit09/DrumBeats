@@ -12,6 +12,7 @@ class DrumKit {
     this.bpm = 150;
     this.isPlaying = null;
     this.selects = document.querySelectorAll("select");
+    this.muteBtns = document.querySelectorAll(".mute");
   }
   activePad() {
     // console.log(this);
@@ -59,11 +60,11 @@ class DrumKit {
   }
   updateBtn() {
     if (!this.isPlaying) {
-        this.playBtn.innerText = " Play";
-        this.playBtn.classList.remove("active");
+      this.playBtn.innerText = " Play";
+      this.playBtn.classList.remove("active");
     } else {
-        this.playBtn.innerText = "Stop";
-        this.playBtn.classList.add("active");
+      this.playBtn.innerText = "Stop";
+      this.playBtn.classList.add("active");
     }
   }
   changeSound(e) {
@@ -79,6 +80,36 @@ class DrumKit {
       case "hihat-select":
         this.hihatAudio.src = selectionValue;
         break;
+    }
+  }
+  mute(e) {
+    const muteIdx = e.target.getAttribute("data-track");
+    e.target.classList.toggle("active");
+    if (e.target.classList.contains("active")) {
+      // means i have to mute the track
+      switch (muteIdx) {
+        case "0":
+          this.kickAudio.volume = 0;
+          break;
+        case "1":
+          this.snareAudio.volume = 0;
+          break;
+        case "2":
+          this.hihatAudio.volume = 0;
+          break;
+      }
+    } else {
+      switch (muteIdx) {
+        case "0":
+          this.kickAudio.volume = 1;
+          break;
+        case "1":
+          this.snareAudio.volume = 1;
+          break;
+        case "2":
+          this.hihatAudio.volume = 1;
+          break;
+      }
     }
   }
 }
@@ -105,5 +136,11 @@ drumKit.playBtn.addEventListener("click", function () {
 drumKit.selects.forEach((select) => {
   select.addEventListener("change", function (e) {
     drumKit.changeSound(e);
+  });
+});
+
+drumKit.muteBtns.forEach((btn) => {
+  btn.addEventListener("click", function (e) {
+    drumKit.mute(e);
   });
 });
