@@ -90,7 +90,6 @@
     border: none;
     cursor: pointer;
     margin-top: 3rem;
-    display: flex;
   }
   
   select {
